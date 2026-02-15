@@ -101,6 +101,17 @@ class Asala:
             trust_layer = self._verify_trust(manifest, options.trust_store)
             layers.append(trust_layer)
 
+        # Layer 4: Physics Verification
+        # Only applicable for media content
+        if options.include_physics_check:
+            detected_type = self._detect_content_type(content)
+            if detected_type == ContentType.IMAGE:
+                 # Lazy import to avoid circular dep if any
+                 from .physics import PhysicsVerifier
+                 physics = PhysicsVerifier()
+                 physics_layer = physics.verify_image(content)
+                 layers.append(physics_layer)
+
         # Calculate overall status
         all_passed = all(layer.passed for layer in layers)
         any_failed = any(not layer.passed for layer in layers)

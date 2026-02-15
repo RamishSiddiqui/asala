@@ -1,4 +1,5 @@
 import { LayerResult } from '../types';
+import { ErrorLevelAnalysis } from '../crypto/ela';
 
 /**
  * Physics-based verification layer
@@ -18,10 +19,11 @@ export class PhysicsVerifier {
 
     // Check 1: Noise pattern analysis (real sensors have specific noise)
     const noiseScore = this.analyzeNoisePatterns(imageBuffer);
-    
+
     // Check 2: Lighting consistency (real-world light physics)
+    // Uses Error Level Analysis (ELA)
     const lightingScore = this.checkLightingConsistency(imageBuffer);
-    
+
     // Check 3: Chromatic aberration (real lenses have this)
     const aberrationScore = this.checkChromaticAberration(imageBuffer);
 
@@ -56,10 +58,10 @@ export class PhysicsVerifier {
 
     // Check 1: Acoustic echo patterns
     const echoScore = this.analyzeEchoPatterns(audioBuffer);
-    
+
     // Check 2: Frequency response (real microphones have limits)
     const frequencyScore = this.checkFrequencyResponse(audioBuffer);
-    
+
     // Check 3: Temporal consistency (sound propagation physics)
     const temporalScore = this.checkTemporalConsistency(audioBuffer);
 
@@ -88,25 +90,22 @@ export class PhysicsVerifier {
     // Simplified: Calculate local variance in pixel blocks
     // Real implementation would use more sophisticated analysis
     const variance = this.calculateLocalVariance(buffer);
-    
+
     // Natural noise has specific statistical properties
     // Score based on how closely it matches expected patterns
     const expectedVariance = 15; // Approximate for natural images
     const deviation = Math.abs(variance - expectedVariance);
-    
+
     return Math.max(0, 100 - deviation * 2);
   }
 
   /**
-   * Check lighting consistency (simplified)
+   * Check lighting consistency via Error Level Analysis (ELA)
+   * Detects regions with different compression levels (manipulation)
    */
   private checkLightingConsistency(buffer: Buffer): number {
-    // Real implementation would analyze:
-    // - Shadow directions
-    // - Light source consistency
-    // - Reflection patterns
-    // For now, return placeholder
-    return 85;
+    // Use ELA to detect inconsistencies often visible as lighting anomalies
+    return ErrorLevelAnalysis.analyze(buffer);
   }
 
   /**
@@ -153,16 +152,16 @@ export class PhysicsVerifier {
     let sum = 0;
     let sumSq = 0;
     const samples = Math.min(buffer.length, 1000);
-    
+
     for (let i = 0; i < samples; i++) {
       const val = buffer[i];
       sum += val;
       sumSq += val * val;
     }
-    
+
     const mean = sum / samples;
     const variance = (sumSq / samples) - (mean * mean);
-    
+
     return Math.sqrt(variance);
   }
 }
