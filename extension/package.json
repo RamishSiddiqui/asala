@@ -2,6 +2,7 @@
   "name": "@asala/extension",
   "version": "0.0.1",
   "description": "Asala - Browser extension for real-time content verification",
+  "license": "GPL-3.0",
   "scripts": {
     "build": "webpack --mode=production",
     "dev": "webpack --mode=development --watch",

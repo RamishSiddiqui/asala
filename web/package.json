@@ -2,6 +2,7 @@
   "name": "@asala/web",
   "version": "0.0.1",
   "description": "Asala - Web interface for content verification",
+  "license": "GPL-3.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
