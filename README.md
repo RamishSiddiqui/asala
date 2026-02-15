@@ -57,7 +57,7 @@ We welcome contributors! See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines
 
 ## 📄 License
 
-MIT License - See [LICENSE](./LICENSE) for details.
+GPLv3 License - See [LICENSE](./LICENSE) for details.
 
 ## 🔗 Resources
 

@@ -22,5 +22,5 @@
     "cryptography",
     "asala"
   ],
-  "license": "MIT"
+  "license": "GPL-3.0"
 }
