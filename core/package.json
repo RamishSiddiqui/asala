@@ -22,5 +22,8 @@
     "cryptography",
     "asala"
   ],
-  "license": "GPL-3.0"
+  "license": "GPL-3.0",
+  "dependencies": {
+    "jpeg-js": "^0.4.4"
+  }
 }
