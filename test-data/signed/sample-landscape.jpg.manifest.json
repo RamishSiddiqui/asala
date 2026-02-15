@@ -1,0 +1,29 @@
+{
+  "id": "urn:uuid:605465aa-e55b-4563-8b9c-2b9f05f0b842",
+  "content_hash": "d6c7a60c01ff97c0fbba0b882b49309d028e5113269f8b152d635ed18a5dc1fd",
+  "content_type": "image",
+  "created_at": "2026-02-15T12:01:46.760143",
+  "created_by": "Test Creator",
+  "signatures": [
+    {
+      "algorithm": "RSA-SHA256",
+      "public_key": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvlb2exbsHkw3mQJjpIIz\n5hRp4KSn3H238/uSFMGHjjb4Sck79c8nlwPM1Nr8nct64w3D1k8x6ku17lR/uDkz\n1P1QJ0XMkwLiIH++NPJ+6KGYJleyEi/kmyLzeSG/oK9BzcejeZcuUhoFq0PYharq\n8EDRFknEs8Cl7kboNl1DpUQbKkH2wp5aCd8iPatpUst9M6pnEsVypg/NQWYLfC7/\nqN2WuF2aDwzb0p5EKuLPeElM9TwCH3FuWg8pNb7sb/BKRad55NjgeWBQ1rb5giNO\nLbbE+vfrvbMSU+CoP4jxMygg0tfg4zPLOYjy9o+K05l8WelUUd7HoGLevwwebRik\n5QIDAQAB\n-----END PUBLIC KEY-----\n",
+      "signature": "uLI3m3CglfIDUc3k5Nic/eVCExlSlQv/7P4oGSsOBqRsMh2Oue4zPUz0n6nrP4qcJxrx3iS9vKqMqEI7y3bYfaONC75DndytnszGHwOOk3SZ112AGUELL67YadiZGWKsP134bvdA9eo5kFYivTnXj8wsz49a9XRA/EAZN50+OCa6Z3+/1YcV5PQRC5UkiTGIoL57T4ot3HSDzTFsFRdJ0c4QXnr9OAlPDiSFJUa/TCvl3KOUmSViq9myWge8nIKc6boAsrQgkVs0JAgfWOFdPTh6Xqx6voGXzOyOk7Bu0MzdaWYH0zIQ3rg1PXDMCNzyXvR8qJFrmz3ADO/eTFvAaA==",
+      "timestamp": "2026-02-15T12:01:46.831217",
+      "signer": "Test Creator"
+    }
+  ],
+  "assertions": [
+    {
+      "type": "c2pa.created",
+      "data": {
+        "device": "unknown-device",
+        "software": "asala/0.0.1",
+        "location": null,
+        "timestamp": "2026-02-15T12:01:46.760544"
+      },
+      "hash": "15554d59520a4f84757b0ded58ee37779f1945bf32e681f9c7ab8dec210221e9"
+    }
+  ],
+  "chain": []
+}

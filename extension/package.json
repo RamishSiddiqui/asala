@@ -1,0 +1,22 @@
+{
+  "name": "@asala/extension",
+  "version": "0.0.1",
+  "description": "Asala - Browser extension for real-time content verification",
+  "scripts": {
+    "build": "webpack --mode=production",
+    "dev": "webpack --mode=development --watch",
+    "build:chrome": "npm run build && cp manifest.json dist/",
+    "build:firefox": "npm run build && cp manifest-firefox.json dist/manifest.json"
+  },
+  "dependencies": {
+    "@asala/core": "^0.0.1"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.1.36",
+    "copy-webpack-plugin": "^11.0.0",
+    "ts-loader": "^9.5.4",
+    "typescript": "^5.9.3",
+    "webpack": "^5.105.2",
+    "webpack-cli": "^5.1.4"
+  }
+}

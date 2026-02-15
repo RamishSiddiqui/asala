@@ -1,0 +1,14 @@
+# Documentation dependencies for Unmask Verify
+
+# Core documentation
+sphinx>=5.0.0
+furo>=2023.0.0
+sphinx-copybutton>=0.5.0
+sphinxcontrib-mermaid>=0.8.0
+
+# Extensions
+sphinx-autobuild>=2021.3.14
+sphinx-ext-autodoc>=0.0.4
+
+# Theme dependencies
+pygments>=2.14.0

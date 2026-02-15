@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <img src="icons/icon48.png" alt="Asala">
+      <h1>Asala</h1>
+    </header>
+
+    <div class="stats">
+      <div class="stat">
+        <span class="number" id="verified-count">0</span>
+        <span class="label">Verified</span>
+      </div>
+      <div class="stat">
+        <span class="number" id="unverified-count">0</span>
+        <span class="label">Unknown</span>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="status-message" id="status-message">
+        Scanning page for content...
+      </div>
+
+      <div class="recent-items" id="recent-items">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="scan-btn" class="btn primary">Scan Page</button>
+      <button id="settings-btn" class="btn secondary">Settings</button>
+    </div>
+
+    <footer>
+      <a href="#" id="learn-more">Learn more about content authenticity</a>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

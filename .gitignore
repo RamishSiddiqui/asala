@@ -1,0 +1,87 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+.Python
+*.so
+
+# Build outputs
+dist/
+build/
+*.egg-info/
+.eggs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+coverage/
+.nyc_output/
+*.lcov
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Binary outputs
+bin/
+*.exe
+*.dll
+*.dylib
+*.so
+
+# Python
+*.manifest
+*.spec
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Sphinx documentation
+docs/_build/
+docs/_static/
+docs/_templates/
+
+# Package files
+*.tgz
+*.tar.gz
+*.zip
+
+# Keys (NEVER commit private keys!)
+*.pem
+keys/private*
+!keys/.gitkeep
+
+# Python Environments
+.venv/
+venv/
+ENV/
+
+# Next.js
+.next/
+out/
+
+# Pytest
+.pytest_cache/
+

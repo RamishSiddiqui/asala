@@ -1,0 +1,44 @@
+{
+  "name": "asala",
+  "version": "0.0.1",
+  "description": "Cryptographic Content Authenticity Verification - Asala (أصالة) means Authenticity",
+  "private": true,
+  "workspaces": [
+    "core",
+    "extension",
+    "cli",
+    "web"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces",
+    "test:core": "npm run test --workspace=@asala/core",
+    "lint": "eslint . --ext .ts,.js",
+    "format": "prettier --write .",
+    "clean": "rimraf */dist bin",
+    "binary:win": "npm run pkg:win --workspace=@asala/cli",
+    "binary:mac": "npm run pkg:mac --workspace=@asala/cli",
+    "binary:linux": "npm run pkg:linux --workspace=@asala/cli",
+    "binary:all": "npm run pkg:all --workspace=@asala/cli",
+    "postinstall": "npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.3.0",
+    "eslint": "^8.55.0",
+    "prettier": "^3.1.0",
+    "rimraf": "^5.0.5"
+  },
+  "keywords": [
+    "authenticity",
+    "verification",
+    "c2pa",
+    "cryptography",
+    "deepfake",
+    "content-provenance",
+    "asala",
+    "أصالة"
+  ],
+  "author": "Asala Contributors",
+  "license": "MIT"
+}

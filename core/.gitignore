@@ -1,0 +1,16 @@
+# Unmask Verify
+
+node_modules/
+dist/
+build/
+*.log
+.DS_Store
+.env
+*.pem
+keys/private*
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+.tox/
+*.egg-info/

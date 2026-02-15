@@ -1,0 +1,153 @@
+/* Unmask Verify - Overlay Styles */
+
+.unmask-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  cursor: pointer;
+  z-index: 99999;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  user-select: none;
+  white-space: nowrap;
+}
+
+.unmask-badge:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.unmask-badge.verified {
+  background: linear-gradient(135deg, #4caf50, #45a049);
+  color: white;
+}
+
+.unmask-badge.unverified {
+  background: linear-gradient(135deg, #ff9800, #f57c00);
+  color: white;
+}
+
+.unmask-badge.error {
+  background: linear-gradient(135deg, #f44336, #d32f2f);
+  color: white;
+}
+
+/* Popup Styles */
+.unmask-popup {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  min-width: 300px;
+  max-width: 400px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow: hidden;
+}
+
+.unmask-popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+}
+
+.unmask-popup-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.unmask-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.unmask-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.unmask-popup-content {
+  padding: 16px;
+}
+
+.unmask-popup-content .status {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.unmask-popup-content .status.verified {
+  color: #4caf50;
+}
+
+.unmask-popup-content .status.unverified {
+  color: #ff9800;
+}
+
+.unmask-popup-content .status.error {
+  color: #f44336;
+}
+
+.unmask-popup-content .confidence {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.unmask-popup-content .manifest {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 8px;
+  padding: 8px;
+  background: #f5f5f5;
+  border-radius: 4px;
+}
+
+.unmask-popup-content .error-detail {
+  font-size: 13px;
+  color: #f44336;
+  margin-bottom: 8px;
+  padding: 8px;
+  background: #ffebee;
+  border-radius: 4px;
+}
+
+.unmask-popup-content .timestamp {
+  font-size: 12px;
+  color: #666;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e0e0e0;
+}
+
+/* Animation for badge appearance */
+@keyframes unmask-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.unmask-badge {
+  animation: unmask-fade-in 0.3s ease;
+}
