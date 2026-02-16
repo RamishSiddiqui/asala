@@ -6,6 +6,7 @@ from pathlib import Path
 
 from .verify import Asala
 from .crypto import CryptoUtils
+from .types import VerificationOptions
 
 
 def verify_command(args):
@@ -27,14 +28,36 @@ def verify_command(args):
             print(f"Error: Manifest not found: {args.manifest}", file=sys.stderr)
             sys.exit(1)
         
-        import json
-        from .types import ContentManifest, ContentType, SignatureInfo, Assertion
+        from .types import ContentManifest, ContentType, SignatureInfo, Assertion, ChainLink
         
         manifest_data = json.loads(manifest_path.read_text())
-        # Parse manifest (simplified for CLI)
-        manifest = None  # Would parse properly in production
+        # Parse manifest from JSON
+        manifest = ContentManifest(
+            id=manifest_data["id"],
+            content_hash=manifest_data["content_hash"],
+            content_type=ContentType(manifest_data["content_type"]),
+            created_at=manifest_data["created_at"],
+            created_by=manifest_data["created_by"],
+            signatures=[
+                SignatureInfo(**sig) for sig in manifest_data.get("signatures", [])
+            ],
+            assertions=[
+                Assertion(**assertion) for assertion in manifest_data.get("assertions", [])
+            ],
+            chain=[
+                ChainLink(**link) for link in manifest_data.get("chain", [])
+            ]
+        )
     
-    result = asala.verify(content, manifest)
+    # Set up verification options
+    options = VerificationOptions(
+        include_metadata=True,
+        include_chain_analysis=True,
+        include_physics_check=args.physics or (manifest is None),  # Enable physics for unsigned content
+        trust_store=args.trust if args.trust else []
+    )
+    
+    result = asala.verify(content, manifest, options)
     
     if args.json:
         print(json.dumps({
@@ -196,6 +219,7 @@ def main():
     verify_parser.add_argument("-t", "--trust", nargs="+", help="Trusted public keys")
     verify_parser.add_argument("-j", "--json", action="store_true", help="Output as JSON")
     verify_parser.add_argument("-v", "--verbose", action="store_true", help="Verbose output")
+    verify_parser.add_argument("-p", "--physics", action="store_true", help="Enable physics-based verification")
     verify_parser.set_defaults(func=verify_command)
     
     # Sign command

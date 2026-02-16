@@ -141,12 +141,46 @@ class Asala:
         options: VerificationOptions
     ) -> VerificationResult:
         """Verify content without a manifest."""
+        layers = []
+        warnings = ["No embedded manifest found"]
+        errors = ["Content lacks C2PA provenance data"]
+
+        # Add physics verification if requested
+        if options.include_physics_check:
+            detected_type = self._detect_content_type(content)
+            if detected_type == ContentType.IMAGE:
+                try:
+                    from .physics import PhysicsVerifier
+                    physics = PhysicsVerifier()
+                    physics_layer = physics.verify_image(content)
+                    layers.append(physics_layer)
+                    
+                    # Update status based on physics results
+                    if physics_layer.passed:
+                        return VerificationResult(
+                            status=VerificationStatus.VERIFIED,
+                            confidence=int(physics_layer.score),
+                            warnings=[],
+                            errors=[],
+                            layers=layers
+                        )
+                    else:
+                        return VerificationResult(
+                            status=VerificationStatus.TAMPERED,
+                            confidence=int(physics_layer.score),
+                            warnings=[],
+                            errors=["Physics analysis indicates synthetic content"],
+                            layers=layers
+                        )
+                except Exception as e:
+                    warnings.append(f"Physics verification failed: {str(e)}")
+
         return VerificationResult(
             status=VerificationStatus.MISSING_PROVENANCE,
             confidence=0,
-            warnings=["No embedded manifest found"],
-            errors=["Content lacks C2PA provenance data"],
-            layers=[]
+            warnings=warnings,
+            errors=errors,
+            layers=layers
         )
 
     def _verify_signatures(self, manifest: ContentManifest) -> LayerResult:
