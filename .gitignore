@@ -90,4 +90,5 @@ out/
 .pytest_cache/
 
 .kilocodemodes
+.kilocode/
 CLAUDE.md
