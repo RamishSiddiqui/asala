@@ -34,6 +34,8 @@ Verify content authenticity.
 
 - ``-m, --manifest <path>`` - Path to manifest file
 - ``-t, --trust <keys...>`` - Trusted public keys
+- ``-p, --physics`` - Enable physics-based verification (image/audio/video analysis)
+- ``-w, --workers <n>`` - Number of parallel threads for physics analysis (default: 1)
 - ``-j, --json`` - Output as JSON
 - ``-v, --verbose`` - Verbose output
 
@@ -62,6 +64,12 @@ With trust store:
 .. code-block:: bash
 
     asala verify ./photo.jpg --trust ./trusted-keys/*.pem
+
+With parallel processing (4 threads):
+
+.. code-block:: bash
+
+    asala verify ./photo.jpg --physics --workers 4
 
 sign
 ^^^^

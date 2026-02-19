@@ -28,6 +28,30 @@ ManifestBuilder
    :undoc-members:
    :show-inheritance:
 
+PhysicsVerifier
+^^^^^^^^^^^^^^^
+
+.. autoclass:: asala.physics.PhysicsVerifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+AudioVerifier
+^^^^^^^^^^^^^
+
+.. autoclass:: asala.audio.AudioVerifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+VideoVerifier
+^^^^^^^^^^^^^
+
+.. autoclass:: asala.video.VideoVerifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Types
 -----
 

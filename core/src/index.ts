@@ -3,11 +3,14 @@ export * from './crypto/utils';
 export * from './crypto/manifest';
 export * from './verifiers/provenance';
 export * from './verifiers/physics';
+export * from './verifiers/audio';
+export * from './verifiers/video';
 
 import { CryptoUtils } from './crypto/utils';
 import { ManifestBuilder } from './crypto/manifest';
 import { ProvenanceVerifier } from './verifiers/provenance';
 import { PhysicsVerifier } from './verifiers/physics';
+import { VideoVerifier } from './verifiers/video';
 import {
   VerificationResult,
   ContentManifest,
@@ -23,10 +26,12 @@ import {
 export class Asala {
   private provenanceVerifier: ProvenanceVerifier;
   private physicsVerifier: PhysicsVerifier;
+  private videoVerifier: VideoVerifier;
 
   constructor() {
     this.provenanceVerifier = new ProvenanceVerifier();
     this.physicsVerifier = new PhysicsVerifier();
+    this.videoVerifier = new VideoVerifier();
   }
 
   /**

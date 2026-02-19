@@ -21,9 +21,15 @@ from .types import (
 class Asala:
     """Main class for content verification."""
 
-    def __init__(self):
-        """Initialize Asala instance."""
-        pass
+    def __init__(self, max_workers: int = 1):
+        """Initialize Asala instance.
+
+        Args:
+            max_workers: Number of threads for parallel analysis within
+                each verifier.  1 (default) runs sequentially.  Values > 1
+                use ThreadPoolExecutor for concurrent analysis methods.
+        """
+        self._max_workers = max(1, max_workers)
 
     def verify(
         self,
@@ -102,15 +108,24 @@ class Asala:
             layers.append(trust_layer)
 
         # Layer 4: Physics Verification
-        # Only applicable for media content
+        # Applicable for image, audio, and video content
         if options.include_physics_check:
             detected_type = self._detect_content_type(content)
             if detected_type == ContentType.IMAGE:
-                 # Lazy import to avoid circular dep if any
-                 from .physics import PhysicsVerifier
-                 physics = PhysicsVerifier()
-                 physics_layer = physics.verify_image(content)
-                 layers.append(physics_layer)
+                from .physics import PhysicsVerifier
+                physics = PhysicsVerifier(max_workers=self._max_workers)
+                physics_layer = physics.verify_image(content)
+                layers.append(physics_layer)
+            elif detected_type == ContentType.AUDIO:
+                from .audio import AudioVerifier
+                audio_verifier = AudioVerifier(max_workers=self._max_workers)
+                audio_layer = audio_verifier.verify_audio(content)
+                layers.append(audio_layer)
+            elif detected_type == ContentType.VIDEO:
+                from .video import VideoVerifier
+                video_verifier = VideoVerifier(max_workers=self._max_workers)
+                video_layer = video_verifier.verify_video(content)
+                layers.append(video_layer)
 
         # Calculate overall status
         all_passed = all(layer.passed for layer in layers)
@@ -148,14 +163,24 @@ class Asala:
         # Add physics verification if requested
         if options.include_physics_check:
             detected_type = self._detect_content_type(content)
-            if detected_type == ContentType.IMAGE:
-                try:
+            physics_layer = None
+            try:
+                if detected_type == ContentType.IMAGE:
                     from .physics import PhysicsVerifier
-                    physics = PhysicsVerifier()
+                    physics = PhysicsVerifier(max_workers=self._max_workers)
                     physics_layer = physics.verify_image(content)
+                elif detected_type == ContentType.AUDIO:
+                    from .audio import AudioVerifier
+                    audio_verifier = AudioVerifier(max_workers=self._max_workers)
+                    physics_layer = audio_verifier.verify_audio(content)
+                elif detected_type == ContentType.VIDEO:
+                    from .video import VideoVerifier
+                    video_verifier = VideoVerifier(max_workers=self._max_workers)
+                    physics_layer = video_verifier.verify_video(content)
+
+                if physics_layer is not None:
                     layers.append(physics_layer)
-                    
-                    # Update status based on physics results
+
                     if physics_layer.passed:
                         return VerificationResult(
                             status=VerificationStatus.VERIFIED,
@@ -172,8 +197,8 @@ class Asala:
                             errors=["Physics analysis indicates synthetic content"],
                             layers=layers
                         )
-                except Exception as e:
-                    warnings.append(f"Physics verification failed: {str(e)}")
+            except Exception as e:
+                warnings.append(f"Physics verification failed: {str(e)}")
 
         return VerificationResult(
             status=VerificationStatus.MISSING_PROVENANCE,
@@ -281,16 +306,18 @@ class Asala:
         content: bytes,
         private_key: str,
         creator: str,
-        content_type: Optional[ContentType] = None
+        content_type: Optional[ContentType] = None,
+        device: str = "unknown-device",
     ) -> ContentManifest:
         """Sign content and create manifest.
-        
+
         Args:
             content: Content to sign
             private_key: Private key in PEM format
             creator: Creator identifier
             content_type: Optional content type override
-            
+            device: Device name for creation info
+
         Returns:
             Signed ContentManifest
         """
@@ -298,7 +325,7 @@ class Asala:
         detected_type = content_type or self._detect_content_type(content)
 
         manifest = ManifestBuilder(content_hash, detected_type, creator)
-        manifest.add_creation_info("unknown-device", "asala/0.0.1")
+        manifest.add_creation_info(device, "asala/0.0.1")
         manifest.sign(private_key, creator)
 
         return manifest.build()
@@ -313,7 +340,7 @@ class Asala:
 
     def _detect_content_type(self, content: bytes) -> ContentType:
         """Detect content type from magic numbers."""
-        if len(content) < 2:
+        if len(content) < 4:
             return ContentType.DOCUMENT
 
         # JPEG
@@ -324,12 +351,40 @@ class Asala:
         if content[0:4] == b'\x89PNG':
             return ContentType.IMAGE
 
+        # WebP
+        if content[0:4] == b'RIFF' and len(content) > 11 and content[8:12] == b'WEBP':
+            return ContentType.IMAGE
+
+        # WAV audio
+        if content[0:4] == b'RIFF' and len(content) > 11 and content[8:12] == b'WAVE':
+            return ContentType.AUDIO
+
+        # MP4 / ftyp container (MP4, M4A, MOV, etc.)
+        if content[4:8] == b'ftyp':
+            return ContentType.VIDEO
+
+        # AVI
+        if content[0:4] == b'RIFF' and len(content) > 11 and content[8:12] == b'AVI ':
+            return ContentType.VIDEO
+
         # GIF
         if content[0:4] == b'GIF8':
             return ContentType.VIDEO
 
         # MP3 (ID3)
         if content[0:3] == b'ID3':
+            return ContentType.AUDIO
+
+        # MP3 without ID3 (sync word)
+        if content[0:2] == b'\xff\xfb' or content[0:2] == b'\xff\xf3':
+            return ContentType.AUDIO
+
+        # FLAC
+        if content[0:4] == b'fLaC':
+            return ContentType.AUDIO
+
+        # OGG (Vorbis/Opus)
+        if content[0:4] == b'OggS':
             return ContentType.AUDIO
 
         return ContentType.DOCUMENT

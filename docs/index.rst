@@ -29,9 +29,10 @@ Asala takes a different approach: **don't detect fakes, prove authenticity**.
 Key Features
 ------------
 
-- **Cryptographic Provenance**: Content signed at creation using private keys
-- **Chain of Custody**: Track all edits and transformations
-- **Multi-Language Support**: TypeScript/JavaScript and Python implementations
+- **Cryptographic Provenance**: Content signed at creation using RSA-2048 private keys
+- **Chain of Custody**: Track all edits and transformations with signed chain links
+- **Physics-Based Verification**: 16 image, 10 audio, and 6 video analysis methods with optional parallel processing
+- **Multi-Language Support**: TypeScript/JavaScript and Python implementations with feature parity
 - **Browser Extension**: Real-time verification on any website
 - **Command-Line Tools**: Verify and sign content from terminal
 - **Open Source**: Fully transparent and auditable

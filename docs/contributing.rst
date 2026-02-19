@@ -74,13 +74,15 @@ We use ESLint and Prettier:
 Python
 ^^^^^^
 
-We use Black, flake8, and mypy:
+We use Black, isort, flake8, mypy, and bandit:
 
 .. code-block:: bash
 
-    black python/
-    flake8 python/
-    mypy python/asala
+    black python/                 # Format code
+    isort python/                 # Sort imports
+    flake8 python/asala           # Lint
+    mypy python/asala             # Type check
+    bandit -r python/asala        # Security scan
 
 Project Structure
 -----------------
@@ -91,13 +93,14 @@ Project Structure
     ├── core/              # TypeScript core library
     │   ├── src/
     │   │   ├── __tests__/    # Jest tests
-    │   │   ├── crypto/       # Cryptographic functions
+    │   │   ├── crypto/       # Cryptographic functions + ELA
+    │   │   ├── imaging/      # Pure-JS image processing (FFT, DCT, convolution)
     │   │   ├── types/        # Type definitions
-    │   │   └── verifiers/    # Verification logic
+    │   │   └── verifiers/    # Physics, audio, video verification
     │   └── package.json
     ├── python/            # Python implementation
-    │   ├── asala/
-    │   └── tests/
+    │   ├── asala/            # Package source (verify, crypto, physics, audio, video)
+    │   └── tests/            # pytest suite (108 tests)
     ├── cli/               # Node.js CLI
     ├── extension/         # Browser extension
     ├── web/               # Web interface
@@ -174,7 +177,7 @@ High Priority
 - Physics-based verification algorithms
 - Browser extension improvements
 - Mobile app development
-- Performance optimizations
+- ~~Performance optimizations~~ (done: parallel processing via ``max_workers``)
 
 Documentation
 ^^^^^^^^^^^^^

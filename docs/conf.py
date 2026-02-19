@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.abspath('../python'))
 # -- Project information -----------------------------------------------------
 
 project = 'Asala'
-copyright = '2024, Asala Contributors'
+copyright = '2024-2026, Asala Contributors'
 author = 'Asala Contributors'
 release = '0.0.1'
 

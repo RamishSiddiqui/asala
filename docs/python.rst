@@ -40,10 +40,13 @@ Module Structure
 
     asala/
     ├── __init__.py          # Main exports
-    ├── verify.py            # Asala class
-    ├── crypto.py            # CryptoUtils
-    ├── manifest.py          # ManifestBuilder
-    ├── types.py             # Type definitions
+    ├── verify.py            # Asala class (main entry point)
+    ├── crypto.py            # CryptoUtils (hashing, signing, key generation)
+    ├── manifest.py          # ManifestBuilder (fluent manifest construction)
+    ├── types.py             # Type definitions (dataclasses, enums)
+    ├── physics.py           # PhysicsVerifier (16 image analysis methods)
+    ├── audio.py             # AudioVerifier (10 audio analysis methods)
+    ├── video.py             # VideoVerifier (6 video analysis methods)
     └── cli.py               # Command-line interface
 
 Detailed Usage
@@ -224,6 +227,99 @@ Analyzing results:
         for error in result.errors:
             print(f"  ✗ {error}")
 
+Physics-Based Verification
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Image verification:
+
+.. code-block:: python
+
+    from asala.physics import PhysicsVerifier
+
+    verifier = PhysicsVerifier()
+
+    with open('photo.jpg', 'rb') as f:
+        image_bytes = f.read()
+
+    result = verifier.verify_image(image_bytes)
+
+    print(f"Score: {result.score}")
+    print(f"Passed: {result.passed}")
+    print(f"AI probability: {result.details['ai_probability']}")
+    print(f"AI indicators: {result.details['ai_indicators']}/16")
+
+Audio verification:
+
+.. code-block:: python
+
+    from asala.audio import AudioVerifier
+
+    verifier = AudioVerifier()
+
+    with open('recording.wav', 'rb') as f:
+        audio_bytes = f.read()
+
+    result = verifier.verify_audio(audio_bytes)
+
+    print(f"Score: {result.score}")
+    print(f"AI indicators: {result.details['ai_indicators']}/10")
+
+Video verification:
+
+.. code-block:: python
+
+    from asala.video import VideoVerifier
+
+    verifier = VideoVerifier()
+
+    with open('clip.mp4', 'rb') as f:
+        video_bytes = f.read()
+
+    result = verifier.verify_video(video_bytes)
+
+    print(f"Score: {result.score}")
+    print(f"AI indicators: {result.details['ai_indicators']}/16")
+
+Parallel Processing
+^^^^^^^^^^^^^^^^^^^
+
+All verifiers accept a ``max_workers`` parameter to run analysis methods
+concurrently using ``ThreadPoolExecutor``. This is off by default
+(``max_workers=1``). Set it to a higher value to enable parallelism:
+
+.. code-block:: python
+
+    from asala import Asala
+
+    # Enable parallel verification with 4 threads
+    asala = Asala(max_workers=4)
+    result = asala.verify(content)
+
+You can also set ``max_workers`` on individual verifiers:
+
+.. code-block:: python
+
+    from asala.physics import PhysicsVerifier
+    from asala.audio import AudioVerifier
+    from asala.video import VideoVerifier
+
+    # Parallel image analysis (16 methods across 4 threads)
+    physics = PhysicsVerifier(max_workers=4)
+    result = physics.verify_image(image_bytes)
+
+    # Parallel audio analysis (10 methods across 4 threads)
+    audio = AudioVerifier(max_workers=4)
+    result = audio.verify_audio(audio_bytes)
+
+    # Parallel video analysis (6 methods + per-frame across 4 threads)
+    video = VideoVerifier(max_workers=4)
+    result = video.verify_video(video_bytes)
+
+Thread safety: all analysis methods only read from pre-computed shared arrays
+(``img``, ``gray``, ``lab``, ``samples``, ``stft_*``). numpy, scipy, and
+OpenCV release the GIL during C-level operations, so threads achieve real
+parallelism without the serialization overhead of multiprocessing.
+
 Cryptographic Utilities
 ^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -384,6 +480,9 @@ Performance Considerations
 - **Signing**: <10ms for typical content
 - **Verification**: <5ms per signature
 - **Memory Usage**: Minimal, proportional to content size
+- **Parallel Processing**: Set ``max_workers > 1`` to run analysis methods
+  concurrently. Uses ``ThreadPoolExecutor`` — numpy/scipy/OpenCV release the
+  GIL so threads achieve real parallelism without process serialization overhead
 
 Best Practices
 --------------

@@ -14,8 +14,8 @@ cryptographic provenance with physics-based analysis.
        end
        
        subgraph Layer2["Layer 2: Physics-Based Verification"]
-           E[Noise Analysis] --> F[Lighting Check]
-           F --> G[Acoustic Patterns]
+           E[Image Analysis<br/>16 methods] --> F[Audio Analysis<br/>10 methods]
+           F --> G[Video Analysis<br/>6 methods]
        end
        
        subgraph Layer3["Layer 3: Distributed Consensus"]
@@ -125,36 +125,65 @@ Verification Process
 Layer 2: Physics-Based Verification
 -----------------------------------
 
-Secondary layer detects synthetic content through mathematical analysis:
+Secondary layer detects synthetic content through mathematical analysis of
+physical properties. Fully implemented for images, audio, and video.
 
-Noise Pattern Analysis
-^^^^^^^^^^^^^^^^^^^^^^
+All analysis methods within each verifier are independent and can run in
+parallel via the ``max_workers`` parameter (default ``1`` = sequential).
+When ``max_workers > 1``, a ``ThreadPoolExecutor`` dispatches all methods
+concurrently.
 
-Real camera sensors produce specific noise patterns:
+Image Analysis (16 Methods)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- **Photo Response Non-Uniformity (PRNU)**: Each sensor unique
-- **Dark Current Noise**: Temperature-dependent patterns
-- **Read Noise**: Electronic characteristics
+**Phase 1 — Core Analysis (8 methods):**
 
-AI-generated content lacks these physical signatures.
+- **Noise uniformity**: Laplacian and median-residual coefficient of variation across 4x4 grid
+- **Noise frequency**: 2D FFT spectral band energy ratios (low/mid/high)
+- **Frequency domain**: 2D DCT entropy and DC/AC separation
+- **Geometric consistency**: Canny edge detection, line counting, angle histogram, corner density
+- **Lighting analysis**: LAB L-channel grid brightness/contrast and gradient direction consistency
+- **Texture patterns**: Sobel gradient magnitude distribution and regional variation
+- **Color distribution**: HSV histogram entropy and regional color consistency
+- **Compression artifacts**: Multi-quality ELA (95/85/75/65) with regional 8x8 grid analysis
 
-Lighting Consistency
-^^^^^^^^^^^^^^^^^^^^
+**Phase 2 — Advanced Detection (4 methods):**
 
-Real-world lighting follows physics:
+- **Noise consistency map**: Sliding-window noise estimation for splice detection
+- **JPEG ghost detection**: Multi-quality recompression to find pasted regions
+- **Spectral fingerprinting**: 2D power spectrum analysis for GAN artifacts
+- **Cross-channel correlation**: R/G/B noise correlation for camera sensor vs GAN discrimination
 
-- Shadow directions must be consistent
-- Light sources have spectral signatures
-- Reflections follow optical laws
+**Phase 3 — Forensic Methods (4 methods):**
 
-Acoustic Verification (Audio)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+- **Benford's law on DCT**: First-digit distribution of DCT coefficients
+- **Wavelet detail ratio**: High-frequency wavelet coefficient analysis
+- **Blocking artifact grid**: 8x8 JPEG block boundary regularity detection
+- **CFA demosaicing**: Bayer pattern periodicity in noise residuals
 
-Real audio has:
+Audio Analysis (10 Methods)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- Room reverberation patterns
-- Microphone frequency response
-- Compression artifacts from codecs
+- **Phase coherence**: Inter-frame phase stability in STFT
+- **Voice quality**: Jitter, shimmer, and harmonics-to-noise ratio
+- **ENF analysis**: Electrical network frequency (50/60 Hz hum) detection
+- **Spectral tilt**: Power-law decay slope of the frequency spectrum
+- **Noise consistency**: Background noise floor stability across segments
+- **Mel regularity**: Mel-spectrogram temporal regularity
+- **Formant bandwidth**: Vocal tract resonance bandwidth naturalness
+- **Double compression**: Re-encoding artifact detection via DCT coefficient analysis
+- **Spectral discontinuity**: Splice detection via spectral consistency at segment boundaries
+- **Sub-band energy**: Energy distribution across frequency sub-bands
+
+Video Analysis (6 Methods)
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- **Per-frame analysis**: Aggregate image-level physics scores across sampled frames
+- **Temporal noise**: Noise consistency between consecutive frames
+- **Optical flow**: Block-matching motion estimation for natural motion patterns
+- **Encoding analysis**: Codec artifact regularity and quantization patterns
+- **Temporal lighting**: Brightness and contrast stability over time
+- **Frame stability**: Normalized cross-correlation between consecutive frames
 
 Layer 3: Distributed Consensus
 -------------------------------
@@ -242,6 +271,11 @@ Performance
 - **Verification**: < 5ms per signature
 - **Memory**: Minimal, scales with content size
 - **No network required**: Can run offline
+- **Parallel processing** (Python): All analysis methods within each verifier
+  can run concurrently via ``ThreadPoolExecutor``. Set ``max_workers > 1`` to
+  enable. Uses threads (not processes) because numpy, scipy, and OpenCV release
+  the GIL during C-level computation, providing real parallelism without
+  serialization overhead.
 
 Standards Compliance
 --------------------

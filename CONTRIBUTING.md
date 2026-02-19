@@ -62,60 +62,77 @@ Feature requests are welcome! Please:
 git clone https://github.com/your-org/asala.git
 cd asala
 
-# Install dependencies
+# Install Node.js dependencies (runs build via postinstall)
 npm install
 
-# Build packages
+# Install Python dependencies
+pip install -e ".[dev]"
+
+# Build all TypeScript packages
 npm run build
 
-# Run tests
-npm run test
-
-# Run in development mode
-npm run dev
+# Run all tests
+npm run test              # TypeScript (Jest)
+pytest python/tests -v    # Python (pytest)
 ```
 
 ### Project Structure
 
 ```
 asala/
-├── core/           # Core library (TypeScript)
-├── extension/      # Browser extension
-├── cli/            # CLI tool
-├── web/            # Web interface
-├── docs/           # Documentation
-└── examples/       # Usage examples
+├── core/              # TypeScript core library
+│   └── src/
+│       ├── crypto/       # Hashing, signing, ELA
+│       ├── imaging/      # Pure-JS image processing (FFT, DCT, convolution)
+│       ├── types/        # TypeScript interfaces
+│       └── verifiers/    # Physics, audio, video verifiers
+├── python/            # Python implementation
+│   ├── asala/            # Package (verify, crypto, physics, audio, video)
+│   └── tests/            # pytest suite (108 tests)
+├── cli/               # Node.js CLI
+├── extension/         # Browser extension (Chrome/Firefox)
+├── web/               # Next.js web interface
+├── docs/              # Sphinx documentation
+└── examples/          # Usage examples
 ```
 
 ### Testing
 
 ```bash
-# Run all tests
-npm test
+# TypeScript
+npm test                                    # All packages
+npm run test --workspace=@asala/core        # Core only
 
-# Run tests for specific package
-npm run test --workspace=@asala/core
-
-# Run with coverage
-npm run test:coverage
+# Python
+pytest python/tests -v                      # All tests
+pytest python/tests -m "not slow"           # Skip slow tests
+pytest python/tests --cov=asala             # With coverage
 ```
 
 ### Code Style
 
-We use:
+**TypeScript:**
 - ESLint for linting
 - Prettier for formatting
-- TypeScript for type safety
 
 ```bash
-# Check code style
 npm run lint
-
-# Fix auto-fixable issues
-npm run lint:fix
-
-# Format code
 npm run format
+```
+
+**Python:**
+- black for formatting
+- isort for import sorting
+- flake8 for linting
+- mypy for type checking
+- bandit for security scanning
+
+```bash
+black python/                 # Format
+isort python/                 # Sort imports
+flake8 python/asala           # Lint
+mypy python/asala             # Type check
+bandit -r python/asala        # Security scan
 ```
 
 ## Areas for Contribution
@@ -123,10 +140,10 @@ npm run format
 ### High Priority
 
 - [ ] C2PA manifest embedding in images
-- [ ] Physics-based verification algorithms
+- [ ] Distributed consensus layer (Layer 3)
 - [ ] Browser extension improvements
 - [ ] Mobile app development
-- [ ] Performance optimizations
+- [x] Performance optimizations for physics verification (parallel processing via `max_workers`)
 
 ### Documentation
 

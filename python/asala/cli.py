@@ -11,7 +11,7 @@ from .types import VerificationOptions
 
 def verify_command(args):
     """Verify content command."""
-    asala = Asala()
+    asala = Asala(max_workers=getattr(args, "workers", 1))
     
     content_path = Path(args.file)
     if not content_path.exists():
@@ -120,8 +120,9 @@ def sign_command(args):
     content = content_path.read_bytes()
     private_key = key_path.read_text()
     creator = args.creator or "Unknown"
-    
-    manifest = asala.sign_content(content, private_key, creator)
+    device = args.device or "unknown-device"
+
+    manifest = asala.sign_content(content, private_key, creator, device=device)
     
     # Determine output path
     output_path = args.output or f"{args.file}.manifest.json"
@@ -220,6 +221,7 @@ def main():
     verify_parser.add_argument("-j", "--json", action="store_true", help="Output as JSON")
     verify_parser.add_argument("-v", "--verbose", action="store_true", help="Verbose output")
     verify_parser.add_argument("-p", "--physics", action="store_true", help="Enable physics-based verification")
+    verify_parser.add_argument("-w", "--workers", type=int, default=1, help="Number of parallel threads for analysis (default: 1)")
     verify_parser.set_defaults(func=verify_command)
     
     # Sign command

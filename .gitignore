@@ -15,6 +15,7 @@ build/
 # IDE
 .vscode/
 .idea/
+.claude/
 *.swp
 *.swo
 *~
@@ -32,6 +33,9 @@ yarn-error.log*
 
 # Testing
 coverage/
+htmlcov/
+.coverage
+coverage.xml
 .nyc_output/
 *.lcov
 
@@ -85,3 +89,5 @@ out/
 # Pytest
 .pytest_cache/
 
+.kilocodemodes
+CLAUDE.md

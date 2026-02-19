@@ -18,6 +18,9 @@ from .types import (
 )
 from .crypto import CryptoUtils
 from .manifest import ManifestBuilder
+from .physics import PhysicsVerifier
+from .audio import AudioVerifier
+from .video import VideoVerifier
 
 __version__ = "0.0.1"
 __all__ = [
@@ -32,4 +35,7 @@ __all__ = [
     "LayerResult",
     "CryptoUtils",
     "ManifestBuilder",
+    "PhysicsVerifier",
+    "AudioVerifier",
+    "VideoVerifier",
 ]

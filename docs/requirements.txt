@@ -1,4 +1,4 @@
-# Documentation dependencies for Unmask Verify
+# Documentation dependencies for Asala
 
 # Core documentation
 sphinx>=5.0.0

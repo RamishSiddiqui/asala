@@ -31,9 +31,10 @@ Asala uses a multi-layered approach:
 - Mathematical signature verification
 
 ### Layer 2: Physics-Based Verification (Secondary)
-- Noise pattern analysis (sensor-specific)
-- Lighting consistency checks
-- Acoustic propagation patterns
+- **Image analysis** (16 methods): noise, frequency, ELA, geometric, lighting, texture, color, spectral fingerprint, channel correlation, Benford DCT, wavelet, CFA demosaicing
+- **Audio analysis** (10 methods): phase coherence, voice quality, ENF, spectral tilt, noise consistency, mel regularity, formant bandwidth, double compression, splice detection, sub-band energy
+- **Video analysis** (6 methods): per-frame analysis, temporal noise, optical flow, encoding, temporal lighting, frame stability
+- **Parallel processing**: All methods run concurrently via `max_workers` parameter (Python `ThreadPoolExecutor`, off by default)
 
 ### Layer 3: Distributed Consensus (Tertiary)
 - Multi-party verification network
@@ -120,6 +121,8 @@ const { publicKey, privateKey } = asala.generateKeyPair();
 asala verify <file> [options]
   -m, --manifest <path>    Path to manifest file
   -t, --trust <keys...>    Trusted public keys
+  -p, --physics           Enable physics-based verification
+  -w, --workers <n>       Number of parallel threads for analysis (default: 1)
   -j, --json              Output as JSON
   -v, --verbose           Verbose output
 
@@ -185,7 +188,7 @@ asala sign ./my-photo.jpg \
   --device "iPhone 14 Pro"
 ```
 
-### Example 3: Programmatic Usage
+### Example 3: Programmatic Usage (TypeScript)
 
 ```typescript
 import { Asala } from '@asala/core';
@@ -193,13 +196,13 @@ import fs from 'fs';
 
 async function verifyImage(imagePath: string) {
   const asala = new Asala();
-  
+
   // Read image
   const content = fs.readFileSync(imagePath);
-  
+
   // Verify
   const result = await asala.verify(content);
-  
+
   if (result.status === 'verified') {
     console.log('Content is authentic!');
     console.log(`Confidence: ${result.confidence}%`);
@@ -208,6 +211,22 @@ async function verifyImage(imagePath: string) {
     console.log('Warnings:', result.warnings);
   }
 }
+```
+
+### Example 4: Parallel Verification (Python)
+
+```python
+from asala import Asala
+
+# Enable parallel analysis with 4 threads
+asala = Asala(max_workers=4)
+
+with open('photo.jpg', 'rb') as f:
+    content = f.read()
+
+result = asala.verify(content)
+print(f"Status: {result.status.value}")
+print(f"Confidence: {result.confidence}%")
 ```
 
 ## Contributing
@@ -221,25 +240,39 @@ We welcome contributions! Please see [CONTRIBUTING.md](../CONTRIBUTING.md) for g
 git clone https://github.com/your-org/asala.git
 cd asala
 
-# Install dependencies
+# Install Node.js dependencies
 npm install
 
-# Build all packages
+# Install Python dependencies
+pip install -e ".[dev]"
+
+# Build all TypeScript packages
 npm run build
 
-# Run tests
+# Run TypeScript tests
 npm run test
+
+# Run Python tests
+pytest python/tests -v
 ```
 
 ### Project Structure
 
 ```
 asala/
-├── core/          # Core cryptographic library
-├── extension/     # Browser extension
-├── cli/           # Command-line tool
-├── web/           # Web interface
-├── docs/          # Documentation
+├── core/          # TypeScript core library (crypto + physics + audio + video)
+│   └── src/
+│       ├── crypto/       # Hashing, signing, ELA
+│       ├── imaging/      # Pure-JS image processing (FFT, DCT, convolution)
+│       ├── types/        # TypeScript interfaces
+│       └── verifiers/    # Physics, audio, video verifiers
+├── python/        # Python implementation
+│   ├── asala/        # Package (verify, crypto, physics, audio, video)
+│   └── tests/        # pytest suite (108 tests)
+├── cli/           # Node.js CLI tool
+├── extension/     # Browser extension (Chrome/Firefox)
+├── web/           # Next.js web interface
+├── docs/          # Sphinx documentation
 └── examples/      # Example usage
 ```
 
