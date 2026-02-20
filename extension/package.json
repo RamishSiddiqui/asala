@@ -3,11 +3,28 @@
   "version": "0.0.1",
   "description": "Asala - Browser extension for real-time content verification",
   "license": "GPL-3.0",
+  "files": [
+    "dist/**/*",
+    "manifest.json",
+    "manifest-firefox.json",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "webpack --mode=production",
     "dev": "webpack --mode=development --watch",
+    "prepublishOnly": "npm run build",
     "build:chrome": "npm run build && cp manifest.json dist/",
     "build:firefox": "npm run build && cp manifest-firefox.json dist/manifest.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RamishSiddiqui/asala.git",
+    "directory": "extension"
+  },
+  "homepage": "https://github.com/RamishSiddiqui/asala#readme",
+  "bugs": {
+    "url": "https://github.com/RamishSiddiqui/asala/issues"
   },
   "dependencies": {
     "@asala/core": "^0.0.1"

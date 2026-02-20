@@ -1,0 +1,49 @@
+# Source files
+src/
+tsconfig.json
+*.ts
+!*.d.ts
+
+# Test files
+__tests__/
+*.test.ts
+*.test.js
+*.spec.ts
+*.spec.js
+coverage/
+.nyc_output/
+
+# Development files
+.eslintrc*
+.prettierrc*
+jest.config.*
+*.config.js
+*.config.ts
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build artifacts (keep dist/)
+*.map
+*.log
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# CI/CD
+.github/
+
+# Documentation (keep README.md and LICENSE)
+docs/
+*.md
+!README.md
+
+# Other
+node_modules/
+.env
+.env.*

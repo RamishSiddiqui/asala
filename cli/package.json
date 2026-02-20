@@ -6,14 +6,29 @@
   "bin": {
     "asala": "./dist/cli.js"
   },
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
+    "prepublishOnly": "npm run build",
     "pkg": "pkg . --out-path=../bin",
     "pkg:win": "pkg . --targets node18-win-x64 --out-path=../bin",
     "pkg:mac": "pkg . --targets node18-macos-x64 --out-path=../bin",
     "pkg:linux": "pkg . --targets node18-linux-x64 --out-path=../bin",
     "pkg:all": "pkg . --targets node18-win-x64,node18-macos-x64,node18-linux-x64 --out-path=../bin"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RamishSiddiqui/asala.git",
+    "directory": "cli"
+  },
+  "homepage": "https://github.com/RamishSiddiqui/asala#readme",
+  "bugs": {
+    "url": "https://github.com/RamishSiddiqui/asala/issues"
   },
   "dependencies": {
     "@asala/core": "^0.0.1",

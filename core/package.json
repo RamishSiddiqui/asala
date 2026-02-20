@@ -4,10 +4,25 @@
   "description": "Asala - Core cryptographic provenance library for content authenticity verification",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc",
     "test": "jest",
-    "dev": "tsc --watch"
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RamishSiddiqui/asala.git",
+    "directory": "core"
+  },
+  "homepage": "https://github.com/RamishSiddiqui/asala#readme",
+  "bugs": {
+    "url": "https://github.com/RamishSiddiqui/asala/issues"
   },
   "devDependencies": {
     "@types/jest": "^29.5.11",

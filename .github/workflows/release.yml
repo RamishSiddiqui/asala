@@ -47,13 +47,14 @@ jobs:
       with:
         password: ${{ secrets.PYPI_API_TOKEN }}
     
+    - name: Build binaries
+      run: npm run binary:all
+    
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          bin/unmask-win.exe
-          bin/unmask-macos
-          bin/unmask-linux
+          bin/asala*
         generate_release_notes: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

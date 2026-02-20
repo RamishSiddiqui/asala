@@ -7,7 +7,7 @@ name = "asala"
 dynamic = ["version"]
 description = "Asala - Cryptographic Content Authenticity Verification"
 readme = "README.md"
-license = {text = "MIT"}
+license = {text = "GPL-3.0"}
 authors = [
     {name = "Asala Contributors"}
 ]
@@ -58,10 +58,10 @@ dev = [
 asala = "asala.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/your-org/asala"
-Documentation = "https://asala.readthedocs.io"
-Repository = "https://github.com/your-org/asala"
-Issues = "https://github.com/your-org/asala/issues"
+Homepage = "https://github.com/RamishSiddiqui/asala"
+Documentation = "https://github.com/RamishSiddiqui/asala#readme"
+Repository = "https://github.com/RamishSiddiqui/asala"
+Issues = "https://github.com/RamishSiddiqui/asala/issues"
 
 [tool.setuptools_scm]
 write_to = "python/asala/_version.py"
