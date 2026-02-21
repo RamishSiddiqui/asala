@@ -23,13 +23,11 @@ class Asala:
 
     def __init__(self, max_workers: int = 1):
         """Initialize Asala instance.
-
+        
         Args:
-            max_workers: Number of threads for parallel analysis within
-                each verifier.  1 (default) runs sequentially.  Values > 1
-                use ThreadPoolExecutor for concurrent analysis methods.
+            max_workers: Number of parallel threads for physics analysis
         """
-        self._max_workers = max(1, max_workers)
+        self.max_workers = max_workers
 
     def verify(
         self,

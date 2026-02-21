@@ -50,6 +50,12 @@ def verify_command(args):
         )
     
     # Set up verification options
+    if args.physics:
+        print("⚠️  Physics verification is EXPERIMENTAL")
+        print("   Current accuracy may vary based on image characteristics")
+        print("   This feature uses mathematical analysis without machine learning")
+        print()
+        
     options = VerificationOptions(
         include_metadata=True,
         include_chain_analysis=True,
@@ -220,7 +226,7 @@ def main():
     verify_parser.add_argument("-t", "--trust", nargs="+", help="Trusted public keys")
     verify_parser.add_argument("-j", "--json", action="store_true", help="Output as JSON")
     verify_parser.add_argument("-v", "--verbose", action="store_true", help="Verbose output")
-    verify_parser.add_argument("-p", "--physics", action="store_true", help="Enable physics-based verification")
+    verify_parser.add_argument("-p", "--physics", action="store_true", help="Enable physics-based verification (EXPERIMENTAL)")
     verify_parser.add_argument("-w", "--workers", type=int, default=1, help="Number of parallel threads for analysis (default: 1)")
     verify_parser.set_defaults(func=verify_command)
     
