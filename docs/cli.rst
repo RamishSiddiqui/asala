@@ -34,7 +34,7 @@ Verify content authenticity.
 
 - ``-m, --manifest <path>`` - Path to manifest file
 - ``-t, --trust <keys...>`` - Trusted public keys
-- ``-p, --physics`` - Enable physics-based verification (image/audio/video analysis)
+- ``-p, --physics`` - Enable physics-based verification (⚠️ EXPERIMENTAL: image/audio/video analysis)
 - ``-w, --workers <n>`` - Number of parallel threads for physics analysis (default: 1)
 - ``-j, --json`` - Output as JSON
 - ``-v, --verbose`` - Verbose output
@@ -70,6 +70,29 @@ With parallel processing (4 threads):
 .. code-block:: bash
 
     asala verify ./photo.jpg --physics --workers 4
+
+⚠️ Experimental Features
+------------------------
+
+Physics-based verification is currently experimental and uses mathematical analysis
+without machine learning. Current accuracy may vary based on image
+characteristics and quality.
+
+**Current Capabilities:**
+- Image analysis: 16 different mathematical methods
+- Audio analysis: 10 different mathematical methods  
+- Video analysis: 6 different mathematical methods
+- Parallel processing: Configurable thread count
+
+**Limitations:**
+- Accuracy varies by image type and quality
+- No machine learning models (CPU-only processing)
+- May produce false positives/negatives
+
+**Best Use Cases:**
+- Initial content screening
+- Consumer device verification
+- Privacy-preserving analysis (no cloud ML)
 
 sign
 ^^^^

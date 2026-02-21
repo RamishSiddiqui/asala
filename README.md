@@ -31,10 +31,7 @@ npm install -g @asala/cli
 # Install CLI (Python)
 pip install asala
 
-# Verify content
-asala verify ./image.jpg
-
-# Verify with physics-based analysis
+# Verify content with physics-based analysis (EXPERIMENTAL)
 asala verify ./image.jpg --physics
 
 # Verify with parallel processing (4 threads)
@@ -51,11 +48,12 @@ asala sign ./video.mp4 --key ./private.pem
 - Chain of custody for any edits/transformations
 - Mathematical proof of authenticity via digital signatures
 
-### Layer 2: Physics-Based Verification (Implemented)
+### Layer 2: Physics-Based Verification (⚠️ EXPERIMENTAL)
 - **Image analysis** (16 methods): noise uniformity, frequency/DCT analysis, ELA, geometric consistency, lighting, texture, color distribution, spectral fingerprinting, channel correlation, Benford's law, wavelet ratios, CFA demosaicing detection
 - **Audio analysis** (10 methods): phase coherence, voice quality, ENF analysis, spectral tilt, noise consistency, mel regularity, formant bandwidth, double compression, spectral discontinuity, sub-band energy
 - **Video analysis** (6 methods): per-frame image analysis, temporal noise, optical flow, encoding analysis, temporal lighting, frame stability
 - **Parallel processing**: All analysis methods within each verifier can run concurrently via `ThreadPoolExecutor` (`max_workers` parameter, off by default)
+- **Current limitations**: Accuracy varies based on image characteristics and quality. Uses mathematical analysis without machine learning for consumer-device compatibility.
 
 ### Layer 3: Distributed Consensus (Roadmap)
 - Multi-party verification network (Planned v0.2.0)
