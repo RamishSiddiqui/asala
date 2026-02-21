@@ -21,12 +21,14 @@ logger = logging.getLogger(__name__)
 
 
 class PhysicsVerifier:
-    """Enhanced physics-based verification layer for detecting AI-generated images.
-
-    This class implements multiple analysis techniques:
-    1. Noise Pattern Analysis - Real camera sensors produce characteristic noise
-    2. Frequency Domain Analysis - DCT/FFT patterns differ in AI images
-    3. Geometric Consistency - Lines, perspectives, and shapes
+    """
+    Enhanced physics-based verification layer for detecting AI-generated images.
+    
+    ⚠️ EXPERIMENTAL: This is an experimental feature that uses mathematical and 
+    physics-based analysis to detect AI-generated images without machine learning.
+    
+    Current accuracy may vary based on image characteristics and quality.
+    Optimized for consumer devices with CPU-only processing.
     4. Lighting Analysis - Shadow and light direction consistency
     5. Texture Analysis - Gradient-based texture metrics
     6. Color Distribution - HSV/LAB color space analysis
